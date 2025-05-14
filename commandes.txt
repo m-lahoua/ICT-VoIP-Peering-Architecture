@@ -1,0 +1,614 @@
+---------- configuration des switches ----------
+
+    ### Switch_ICT ###
+enable
+conf t
+hostname s_ict
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+
+    ### Switch_Serveurs ###
+enable
+conf t
+hostname s_serveurs
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+
+    ### Switch_HR ###
+enable
+conf t
+hostname s_hr
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+
+    ### Switch_Sales ###
+enable
+conf t
+hostname s_sales
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+
+    ### Switch_Finance ###
+enable
+conf t
+hostname s_finance
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+
+---------- configuration des routeurs ----------
+
+    ### Routeur ICT ###
+enable
+conf t
+hostname r_ict
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+username cisco password cisco
+ip domain name ests.net
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+exit
+do wr
+
+    ### Routeur HR ###
+enable
+conf t
+hostname r_hr
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+username cisco password cisco
+ip domain name ests.net
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+exit
+do wr
+
+    ### Routeur Sales ###
+enable
+conf t
+hostname r_sales
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+username cisco password cisco
+ip domain name ests.net
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+exit
+do wr
+
+    ### Router Finance ###
+enable
+conf t
+hostname r_finance
+enable password cisco
+line console 0
+password cisco
+login
+exit
+banner motd ESTS - SIR MOHAMMED LAHOUA
+service password-encryption
+no ip domain-lookup
+do wr
+username cisco password cisco
+ip domain name ests.net
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+line vty 0 15
+login local
+transport input ssh
+exit
+do wr
+
+---------- configuration des VLANs sur les switches ----------
+
+    ### Switch Finance ###
+enable
+conf t
+vlan 10
+name DATA
+vlan 100
+name VOICE
+exit
+interface fa0/1
+switchport mode trunk
+exit
+interface range fa0/2-24
+switchport mode access
+switchport access vlan 10
+switchport voice vlan 100
+do wr
+
+    ### Switch HR ###
+enable
+conf t
+vlan 20
+name DATA
+vlan 100
+name VOICE
+exit
+interface fa0/1
+switchport mode trunk
+exit
+interface range fa0/2-24
+switchport mode access
+switchport access vlan 20
+switchport voice vlan 100
+do wr
+
+    ### Switch Sales ###
+enable
+conf t
+vlan 30
+name DATA
+vlan 100
+name VOICE
+exit
+interface fa0/1
+switchport mode trunk
+exit
+interface range fa0/2-24
+switchport mode access
+switchport access vlan 30
+switchport voice vlan 100
+do wr
+
+    ### Switch ICT ###
+enable
+conf t
+vlan 40
+name DATA
+vlan 100
+name VOICE
+exit
+interface fa0/1
+switchport mode trunk
+exit
+interface range fa0/2-24
+switchport mode access
+switchport access vlan 40
+switchport voice vlan 100
+do wr
+
+    ### Switch Serveurs ###
+enable
+conf t
+vlan 50
+name DATA
+exit
+interface fa0/1
+switchport mode trunk
+exit
+interface range fa0/2-5
+switchport mode access
+switchport access vlan 50
+do wr
+
+---------- configuration du DHCP pour la voix ----------
+
+    ### finance router ###
+enable
+conf t
+service dhcp
+ip dhcp excluded-address 172.16.100.1
+ip dhcp pool finance_voice
+network 172.16.100.0 255.255.255.224
+default-router 172.16.100.1
+option 150 ip 172.16.100.1
+exit
+do wr
+
+    ### sales router ###
+enable
+conf t
+service dhcp
+ip dhcp excluded-address 172.16.100.65
+ip dhcp pool sales_voice
+network 172.16.100.64 255.255.255.224
+default-router 172.16.100.65
+option 150 ip 172.16.100.65
+exit
+do wr
+
+    ### hr router ###
+enable
+conf t
+service dhcp
+ip dhcp excluded-address 172.16.100.33
+ip dhcp pool hr_voice
+network 172.16.100.32 255.255.255.224
+default-router 172.16.100.33
+option 150 ip 172.16.100.33
+exit
+do wr
+
+    ### ict router ###
+enable
+conf t
+service dhcp
+ip dhcp excluded-address 172.16.100.97
+ip dhcp pool ict_voice
+network 172.16.100.96 255.255.255.224
+default-router 172.16.100.97
+option 150 ip 172.16.100.97
+exit
+do wr
+
+---------- configuration du sous-interfaces pour les VLANs ----------
+
+    ### finance router ###
+enable
+conf t
+int fa0/0.10
+encapsulation dot1Q 10
+ip address 192.168.100.1 255.255.255.224
+ip helper-address 192.168.100.130
+exit
+int fa0/0.100
+encapsulation dot1Q 100
+ip address 172.16.100.1 255.255.255.224
+exit
+do wr
+
+    ### hr router ###
+enable
+conf t
+int fa0/0.20
+encapsulation dot1Q 20
+ip address 192.168.100.33 255.255.255.224
+ip helper-address 192.168.100.130
+exit
+int fa0/0.100
+encapsulation dot1Q 100
+ip address 172.16.100.33 255.255.255.224
+exit
+do wr
+
+    ### sales router ###
+enable
+conf t
+int fa0/0.30
+encapsulation dot1Q 30
+ip address 192.168.100.65 255.255.255.224
+ip helper-address 192.168.100.130
+exit
+int fa0/0.100
+encapsulation dot1Q 100
+ip address 172.16.100.65 255.255.255.224
+exit
+do wr
+
+    ### ict router ###
+enable
+conf t
+int fa0/0.40
+encapsulation dot1Q 40
+ip address 192.168.100.97 255.255.255.224
+ip helper-address 192.168.100.130
+exit
+int fa0/0.100
+encapsulation dot1Q 100
+ip address 172.16.100.97 255.255.255.224
+exit
+do wr
+
+int fa0/1.50
+encapsulation dot1Q 50
+ip address 192.168.100.129 255.255.255.248
+exit
+do wr
+
+---------- configuration du OSPF sur les routeurs ----------
+
+    ### ict router ###
+enable
+conf t
+router ospf 10
+network 10.10.10.4 0.0.0.3 area 0
+network 10.10.10.12 0.0.0.3 area 0
+network 192.168.100.128 0.0.0.7 area 0
+network 192.168.100.96 0.0.0.31 area 0
+network 172.16.100.96 0.0.0.31 area 0
+exit
+do wr
+
+    ### finance router ###
+enable
+conf t
+router ospf 10
+network 10.10.10.4 0.0.0.3 area 0
+network 10.10.10.0 0.0.0.3 area 0
+network 192.168.100.0 0.0.0.31 area 0
+network 172.16.100.0 0.0.0.31 area 0
+exit
+do wr
+
+    ### hr router ###
+enable
+conf t
+router ospf 10
+network 10.10.10.8 0.0.0.3 area 0
+network 10.10.10.12 0.0.0.3 area 0
+network 192.168.100.32 0.0.0.31 area 0
+network 172.16.100.32 0.0.0.31 area 0
+exit
+do wr
+
+    ### sales router ###
+enable
+conf t
+router ospf 10
+network 10.10.10.0 0.0.0.3 area 0
+network 10.10.10.8 0.0.0.3 area 0
+network 192.168.100.64 0.0.0.31 area 0
+network 172.16.100.64 0.0.0.31 area 0
+exit
+do wr
+
+---------- configuration du VOIP sur les routeurs ----------
+
+    ### router finance ###
+enable
+conf t
+telephony-service 
+max-dn 20
+max-ephones 20
+ip source-address 172.16.100.1 port 2000
+auto assign 1 to 20
+exit
+ephone-dn 1
+number 101
+ephone-dn 2
+number 102
+ephone-dn 3
+number 103
+ephone-dn 4
+number 104
+ephone-dn 5
+number 105
+do wr
+
+    ### routeur hr ###
+enable
+conf t
+telephony-service 
+max-dn 20
+max-ephones 20
+ip source-address 172.16.100.33 port 2000
+auto assign 1 to 20
+exit
+ephone-dn 1
+number 201
+ephone-dn 2
+number 202
+ephone-dn 3
+number 203
+ephone-dn 4
+number 204
+ephone-dn 5
+number 205
+do wr
+
+    ### routeur sales ###
+enable
+conf t
+telephony-service 
+max-dn 20
+max-ephones 20
+ip source-address 172.16.100.65 port 2000
+auto assign 1 to 20
+exit
+ephone-dn 1
+number 301
+ephone-dn 2
+number 302
+ephone-dn 3
+number 303
+ephone-dn 4
+number 304
+ephone-dn 5
+number 305
+do wr
+
+    ### routeur ict ###
+enable
+conf t
+telephony-service 
+max-dn 20
+max-ephones 20
+ip source-address 172.16.100.97 port 2000
+auto assign 1 to 20
+exit
+ephone-dn 1
+number 401
+ephone-dn 2
+number 402
+ephone-dn 3
+number 403
+ephone-dn 4
+number 404
+ephone-dn 5
+number 405
+do wr
+
+---------- configuration du dial peering sur les routeurs ----------
+
+        *** router finance ***
+        
+    ### ip-phone finance -> ip-phone sales ###
+enable
+conf t
+dial-peer voice 1 voip
+destination-pattern 3..
+session target ipv4:10.10.10.2
+exit
+do wr
+
+    ### ip-phone finance -> ip-phone hr ###
+enable
+conf t
+dial-peer voice 2 voip
+destination-pattern 2..
+session target ipv4:10.10.10.10
+exit
+do wr
+
+    ### ip-phone finance -> ip-phone ict ###
+enable
+conf t
+dial-peer voice 3 voip
+destination-pattern 4..
+session target ipv4:10.10.10.6
+exit
+do wr
+
+        *** router hr ***
+
+    ### ip-phone hr -> ip-phone finance ###
+enable
+conf t
+dial-peer voice 2 voip
+destination-pattern 1..
+session target ipv4:10.10.10.1
+exit
+do wr
+
+    ### ip-phone hr -> ip-phone sales ###
+enable
+conf t
+dial-peer voice 4 voip
+destination-pattern 3..
+session target ipv4:10.10.10.9
+exit
+do wr
+
+    ### ip-phone hr -> ip-phone ict ###
+enable
+conf t
+dial-peer voice 5 voip
+destination-pattern 4..
+session target ipv4:10.10.10.13
+exit
+do wr
+
+        *** router sales ***
+
+    ### ip-phone sales -> ip-phone finance ###
+enable
+conf t
+dial-peer voice 1 voip
+destination-pattern 1..
+session target ipv4:10.10.10.1
+exit
+do wr
+
+    ### ip-phone sales -> ip-phone hr ###
+enable
+conf t
+dial-peer voice 4 voip
+destination-pattern 2..
+session target ipv4:10.10.10.10
+exit
+do wr
+
+    ### ip-phone sales -> ip-phone ict ###
+enable
+conf t
+dial-peer voice 6 voip
+destination-pattern 4..
+session target ipv4:10.10.10.13
+exit
+do wr
+
+        *** router ict ***
+
+    ### ip-phone ict -> ip-phone finance ###
+enable
+conf t
+dial-peer voice 3 voip
+destination-pattern 1..
+session target ipv4:10.10.10.1
+exit
+do wr
+
+    ### ip-phone ict -> ip-phone hr ###
+enable
+conf t
+dial-peer voice 5 voip
+destination-pattern 2..
+session target ipv4:10.10.10.10
+exit
+do wr
+
+    ### ip-phone ict -> ip-phone sales ###
+enable
+conf t
+dial-peer voice 6 voip
+destination-pattern 3..
+session target ipv4:10.10.10.9
+exit
+do wr

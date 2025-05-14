@@ -1,0 +1,43 @@
+---
+
+**Contexte :**
+Vous travaillez pour une entreprise X qui se spécialise dans la livraison d'infrastructures informatiques aux organisations. Avec l'expansion de l'entreprise, 
+une nouvelle branche a besoin d'un nouveau réseau.
+Vous êtes chargé de concevoir et de mettre en œuvre un réseau VOIP basé sur les exigences et spécifications qui vous ont été données.
+
+Vous devez concevoir et mettre en œuvre une infrastructure réseau en interconnectant ces départements :
+- Finance : 20 téléphones + 20 PC + 1 imprimante
+- HR : 20 téléphones + 20 PC + 1 imprimante
+- Sales : 20 téléphones + 20 PC + 1 imprimante
+- ICT : 20 téléphones + 20 PC + 1 imprimante
+
+Tous les ordinateurs de bureau ont un téléphone associé (chaque PC est directement connecté à un téléphone, pas à un switch).
+
+Le réseau se compose de 4 serveurs situés dans le site côté serveur et est entièrement configuré pour les opérations, et tous les serveurs sont partagés 
+entre tous les utilisateurs.
+HTTP, DNS, DHCP, Email.
+
+Vous utiliserez les adresses IP suivantes : 192.168.100.0 /24 pour les DONNÉES, 172.16.100.0 /24 pour la Voix, et 10.10.10.0 /24 entre les routeurs.
+
+1. **Concevoir** un système de réseau pour répondre aux exigences, utiliser le logiciel PACKET TRACER.
+2. **Routeurs** : chaque département doit avoir un routeur VOIP avec un LAN côté serveur attaché au routeur du département ICT, note : utiliser le routeur Cisco 2811.
+3. **Switches** : chaque département dispose d'un switch de couche d'accès. Note : utiliser le switch Cisco 2960.
+4. **Connexions** : utiliser des connexions série entre un routeur et un routeur, puis un câble droit entre le routeur et le switch, le switch aux hôtes, les hôtes aux PC.
+5. **Sous-réseaux** : chaque département accèdera à deux sous-réseaux (sous-réseaux de données et de voix).
+6. **Paramètres de base** : configurer les paramètres de base des appareils tels que les noms d'hôtes, les mots de passe de la console, les mots de passe enable, les 
+        messages de bannière, chiffrer tous les mots de passe, et désactiver la recherche de domaine IP.
+7. **Serveur DHCP** : pour la voix (VOIP), utiliser le routeur respectif comme serveur DHCP, tandis que pour les données, utiliser le dispositif serveur DHCP sur le site 
+        côté serveur.
+8. **VLANs** : chaque département sera dans deux VLANs, un pour les données et un autre pour la voix. Note : tous les téléphones IP du réseau doivent être dans le VLAN 100.
+9. **Routage inter-VLAN** : utiliser le routeur-on-a-stick pour activer le routage inter-VLAN sur le réseau. Note : créer des sous-interfaces pour les VLANs 
+        de données et de voix.
+10. **Attribution d'adresses IP** : tous les appareils du réseau doivent obtenir une adresse IP dynamiquement à partir des serveurs DHCP respectifs, 
+        tandis que les appareils de la salle des serveurs doivent se voir attribuer des adresses IP statiques.
+11. **Protocole de routage** : utiliser OSPF comme protocole de routage pour annoncer les routes sur les routeurs.
+12. **Accès à distance** : configurer SSH sur tous les routeurs pour la connexion à distance.
+13. **Service de téléphonie** : configurer le VOIP sur les routeurs et attribuer des numéros de téléphone dans ce format pour les départements, 
+    finance (1..), RH (2..), ventes (3..), ICT (4..).
+14. **Routage pour VOIP** : configurer le dial-peering sur le routeur pour permettre aux téléphones IP de différents routeurs de communiquer.
+15. **Finaliser** : tester les communications, s'assurer que tout ce qui est configuré fonctionne comme prévu.
+
+---

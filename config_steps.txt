@@ -1,0 +1,75 @@
+---
+
+**Étapes de Conception**
+1. Mise en place des routeurs (Cisco 2811 x4) et des switches (Cisco 2960 x4).
+2. Le département ICT hébergera 2 LAN, on ajoute un switch dans le bloc ICT pour le coté serveur.
+3. Mise en place des connections :
+    -Activer les ports serial sur les routeurs (HWIC-2T).
+    -Utiliser un cable serial DTE entre les routeurs sur les ports serial.
+    -Utiliser une connection automatique entre les routeurs et les switches.
+    -Utiliser une connection automatique entre les IP-Phones et les switches.
+    -Brancher cable d'alimentation sur les IP-Phones.
+    -Utiliser une connection automatique entre les 4 serveurs et le 2ème switch de la département ICT.
+    -Utiliser une connection automatique entre les PCs et les IP-Phones.
+    -Utiliser une connection automatique entre les imprimantes et les switches
+4. Mise en place du schèma des composants de l'architecture.
+
+---
+
+---
+
+**Étapes de configuration**
+1. Paramètres de base pour tous les appareils plus SSH sur les routeurs (les noms d'hôtes, les mots de passe de la console, les mots de passe enable,
+    les messages de bannière, chiffrer tous les mots de passe, et désactiver la recherche de domaine IP.)
+
+2. Attribution des VLANs plus tous les ports d'accès et de trunk sur les switches
+    il faut déterminer quelle port sera trunk
+
+3. Subnetting et attribution d'adresses IP
+    configuration des adresses des interfaces des routeurs
+    allumer les interfaces du routeurs
+
+4. Adresses IP statiques pour les appareils de la salle des serveurs
+
+5. Configuration du serveur DHCP
+    allumer le service DHCP 
+    créer un pool finance
+        gateway 192.168.100.1
+        dns 192.168.100.131
+        start ip 192.168.100.2
+        mask 255.255.255.224
+        user number 30
+    créer un pool hr
+        gateway 192.168.100.33
+        dns 192.168.100.131
+        start ip 192.168.100.34
+        mask 255.255.255.224
+        user number 30
+    créer un pool sales
+        gateway 192.168.100.65
+        dns 192.168.100.131
+        start ip 192.168.100.66
+        mask 255.255.255.224
+        user number 30
+    créer un pool ict
+        gateway 192.168.100.97
+        dns 192.168.100.131
+        start ip 192.168.100.98
+        mask 255.255.255.224
+        user number 30
+
+6. Configuration DHCP pour la voix
+    sur les routeurs
+
+7. Routage inter-VLAN sur les routeurs plus adresses IP de l'assistant DHCP
+    pour chaque routeur on a 2 sous-interfaces, une pour data et une pour voice
+
+8. OSPF sur les routeurs
+
+9. Configuration VOIP sur tous les routeurs
+
+10. Configuration du dial peering sur tous les routeurs
+
+11. Vérification et test des configurations
+
+---
